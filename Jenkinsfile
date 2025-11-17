@@ -1,7 +1,12 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'M3'   // Le nom configuré dans Manage Jenkins → Tools → Maven
+    }
+
     stages {
+
         stage('Checkout') {
             steps {
                 git credentialsId: 'github-token',
