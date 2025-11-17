@@ -2,17 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                git credentialsId: 'github-cred-id',
-                    url: 'https://github.com/doniamaaz/studentManagment.git',
-                    branch: 'main'
-            }
-        }
 
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean package'
+                bat 'mvn clean package'
             }
         }
     }
