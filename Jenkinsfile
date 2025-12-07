@@ -43,7 +43,7 @@ pipeline {
         }
         stage('Test with sonarqube') {
             environment {
-                SONAR_TOKEN = credentials('jenkins-sonarqube')
+                SONAR_TOKEN = credentials('jenkins-sonar')
             }
             steps {
                 withSonarQubeEnv(installationName: 'sq1') {
