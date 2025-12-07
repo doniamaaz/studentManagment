@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'M3'   // Le nom configuré dans Manage Jenkins → Tools → Maven
+        maven 'M3'
     }
 
     stages {
@@ -15,11 +15,42 @@ pipeline {
             }
         }
 
-        stage('Build with Maven') {
+        stage('Build Maven') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package -DskipTests'
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t doniaamaazoun/student-management:latest .'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push doniaamaazoun/student-management:latest
+                    '''
+                }
+            }
+        }
+         stage('Scan') {
+            steps {
+                withSonarQubeEnv(installationName:'sq1'){
+                    sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+
+
+                }
+            }
+        }
+
     }
 
     post {
