@@ -21,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+      /*  stage('Build Docker Image') {
             steps {
                 sh 'docker build -t doniaamaazoun/student-management:latest .'
             }
@@ -40,7 +40,7 @@ pipeline {
                     '''
                 }
             }
-        }
+        }*/
         stage('Test with sonarqube') {
             environment {
                 SONAR_TOKEN = credentials('jenkins-sonar')
