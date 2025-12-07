@@ -42,17 +42,16 @@ pipeline {
             }
         } */
         stage('Test with sonarqube') {
-            environment {
-                SONAR_TOKEN = credentials('jenkins-sonar')
-            }
-            steps {
-                withSonarQubeEnv(installationName: 'sq1') {
-                    sh 'echo $SONAR_TOKEN'
-                    sh 'mvn sonar:sonar'
-                    sh 'mvn clean verify sonar:sonar -Dsonar.login=$SONAR_TOKEN'
-                }
-            }
+    environment {
+        SONAR_TOKEN = credentials('jenkins-sonar')
+    }
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            sh 'mvn clean verify sonar:sonar -Dsonar.login=$SONAR_TOKEN'
         }
+    }
+}
+
 
     }
 
